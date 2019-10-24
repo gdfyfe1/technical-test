@@ -4,19 +4,26 @@ import instruction.BuySell;
 import instruction.Currency;
 import instruction.Instruction;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import parser.exception.UnparsableLine;
 
 import java.math.BigDecimal;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static java.lang.Integer.parseInt;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 
 public class InstructionParserTest {
 
     private static final String DATE_FORMAT_STRING = "dd MMM yyyy";
+
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
 
     private InstructionParser testObject;
     private DateTimeFormatter dateTimeFormatter;
@@ -42,39 +49,53 @@ public class InstructionParserTest {
         testObject.parseInstruction("a,b,c,d,e,f,g,h");
     }
 
-    @Test(expected = UnparsableLine.class)
+    @Test
     public void parseInstructionInvalidBuySell() throws UnparsableLine {
+        setExpectedException(IllegalArgumentException.class);
+
         testObject.parseInstruction("foo, invalid, 0.50, USD, 01 Jan 2016, 02 Jan 2016, 200, 100.25");
     }
 
-    @Test(expected = UnparsableLine.class)
+    @Test
     public void parseInstructionInvalidFxRate() throws UnparsableLine {
-        testObject.parseInstruction("foo, invalid,  0.50, USD, 01 Jan 2016, 02 Jan 2016, 200, 100.25");
+        setExpectedException(NumberFormatException.class);
+
+        testObject.parseInstruction("foo, B,  invalid, USD, 01 Jan 2016, 02 Jan 2016, 200, 100.25");
     }
 
-    @Test(expected = UnparsableLine.class)
+    @Test
     public void parseInstructionInvalidCurrency() throws UnparsableLine {
+        setExpectedException(IllegalArgumentException.class);
+
         testObject.parseInstruction("foo, B, 0.50, invalid, 01 Jan 2016, 02 Jan 2016, 200, 100.25");
     }
 
-    @Test(expected = UnparsableLine.class)
+    @Test
     public void parseInstructionInvalidInstructionDate() throws UnparsableLine {
-        testObject.parseInstruction("foo, B, invalid, USD, invalid, 02 Jan 2016, 200, 100.25");
+        setExpectedException(DateTimeException.class);
+
+        testObject.parseInstruction("foo, B, 0.50, USD, invalid, 02 Jan 2016, 200, 100.25");
     }
 
-    @Test(expected = UnparsableLine.class)
+    @Test
     public void parseInstructionInvalidSettlementDate() throws UnparsableLine {
-        testObject.parseInstruction("foo, B, invalid, USD, 01 Jan 2016, invalid, 200, 100.25");
+        setExpectedException(DateTimeException.class);
+
+        testObject.parseInstruction("foo, B, 0.50, USD, 01 Jan 2016, invalid, 200, 100.25");
     }
 
-    @Test(expected = UnparsableLine.class)
+    @Test
     public void parseInstructionInvalidUnits() throws UnparsableLine {
-        testObject.parseInstruction("foo, B, invalid, USD, 01 Jan 2016, 02 Jan 2016, invalid, 100.25");
+        setExpectedException(NumberFormatException.class);
+
+        testObject.parseInstruction("foo, B, 0.50, USD, 01 Jan 2016, 02 Jan 2016, invalid, 100.25");
     }
 
-    @Test(expected = UnparsableLine.class)
+    @Test
     public void parseInstructionInvalidPricePerUnit() throws UnparsableLine {
-        testObject.parseInstruction("foo, B, invalid, USD, 01 Jan 2016, 02 Jan 2016, 200, invalid");
+        setExpectedException(NumberFormatException.class);
+
+        testObject.parseInstruction("foo, B, 0.50, USD, 01 Jan 2016, 02 Jan 2016, 200, invalid");
     }
 
     @Test
@@ -115,5 +136,10 @@ public class InstructionParserTest {
 
         assertEquals(parseInt(units), returnedInstruction.getUnits());
         assertEquals(new BigDecimal(pricePerUnit), returnedInstruction.getPricePerUnit());
+    }
+
+    private void setExpectedException(Class causeClass) {
+        exception.expect(UnparsableLine.class);
+        exception.expectCause(instanceOf(causeClass));
     }
 }

@@ -85,7 +85,7 @@ public class InstructionParser {
     private int parseUnits(String units) throws UnparsableLine {
         try {
             return Integer.parseInt(units);
-        } catch (DateTimeParseException e) {
+        } catch (NumberFormatException e) {
             throw new UnparsableLine(String.format("Could not parse %s into an integer.", units), e);
         }
     }
