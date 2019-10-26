@@ -1,11 +1,14 @@
-package settlement;
+package application.settlement;
 
-import instruction.Currency;
-import instruction.Instruction;
-import instruction.SettledInstruction;
+import application.instruction.Currency;
+import application.instruction.Instruction;
+import application.instruction.SettledInstruction;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,15 +21,16 @@ public class InstructionSettlerServiceTest {
 
     private InstructionSettlerService testObject;
 
-    private LocalDate instructionDate;
+    @Rule
+    public MockitoRule rule = MockitoJUnit.rule();
     private Currency currency;
     private BigDecimal pricePerUnits;
     private int units;
     private BigDecimal agreedFx;
     private Instruction instruction;
-
     private LocalDate settleDate;
     private BigDecimal settlePrice;
+    private LocalDate newSettleDate;
 
     @Mock
     private SettlementDateService settlementDateServiceMock;
@@ -38,15 +42,15 @@ public class InstructionSettlerServiceTest {
     public void setUp() {
         testObject = new InstructionSettlerService(settlementDateServiceMock, priceCalculatorServiceMock);
 
-        instructionDate = LocalDate.of(2019, 10, 26);
+        settleDate = LocalDate.of(2019, 10, 26);
         currency = Currency.USD;
         pricePerUnits = new BigDecimal(100.5);
         units = 20;
         agreedFx = new BigDecimal(1.5);
 
-        instruction = createInstruction(instructionDate, currency, pricePerUnits, units, agreedFx);
+        instruction = createInstruction(settleDate, currency, pricePerUnits, units, agreedFx);
 
-        settleDate = LocalDate.of(2019, 10, 27);
+        newSettleDate = LocalDate.of(2019, 10, 27);
         settlePrice = new BigDecimal(99);
     }
 
@@ -55,10 +59,10 @@ public class InstructionSettlerServiceTest {
         testObject.createSettledInstruction(null);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void createSettledInstruction() {
-        when(settlementDateServiceMock.calculateSettlementDate(instructionDate, currency))
-                .thenReturn(settleDate);
+        when(settlementDateServiceMock.calculateSettlementDate(settleDate, currency))
+                .thenReturn(newSettleDate);
 
         when(priceCalculatorServiceMock.calculatePrice(pricePerUnits, units, agreedFx))
                 .thenReturn(settlePrice);
@@ -66,19 +70,19 @@ public class InstructionSettlerServiceTest {
         SettledInstruction settledInstruction = testObject.createSettledInstruction(instruction);
 
         assertNotNull(settledInstruction);
-        assertEquals(settleDate, settledInstruction.getInstruction().getSettlementDate());
-        assertEquals(settlePrice, settledInstruction.getSettledPrice());
+        assertEquals(newSettleDate, settledInstruction.getInstruction().getSettlementDate());
+        assertEquals(settlePrice, settledInstruction.getSettledPriceUsd());
     }
 
     private Instruction createInstruction(
-            LocalDate instructionDate,
+            LocalDate settleDate,
             Currency currency,
             BigDecimal pricePerUnits,
             int units,
             BigDecimal agreedFx
     ) {
         Instruction instruction = new Instruction();
-        instruction.setInstructionDate(instructionDate);
+        instruction.setSettlementDate(settleDate);
         instruction.setCurrency(currency);
         instruction.setPricePerUnit(pricePerUnits);
         instruction.setUnits(units);

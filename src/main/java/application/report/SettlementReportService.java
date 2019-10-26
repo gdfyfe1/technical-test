@@ -1,7 +1,8 @@
-package report;
+package application.report;
 
-import instruction.BuySell;
-import instruction.SettledInstruction;
+import application.instruction.BuySell;
+import application.instruction.SettledInstruction;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,7 +13,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-public class SettlementDateReport {
+@Service
+public class SettlementReportService {
 
     public Map<LocalDate, BigDecimal> calculateSettledPriceByDates(
             List<SettledInstruction> settledInstructions,
@@ -32,7 +34,7 @@ public class SettlementDateReport {
 
     private Collector<SettledInstruction, ?, BigDecimal> createSettledPriceSummer() {
         return Collectors.mapping(
-                SettledInstruction::getSettledPrice,
+                SettledInstruction::getSettledPriceUsd,
                 Collectors.reducing(BigDecimal.ZERO, BigDecimal::add)
         );
     }
@@ -43,7 +45,7 @@ public class SettlementDateReport {
     ) {
         return settledInstructions.stream()
                 .filter(filterBuySell(buySell))
-                .sorted(Comparator.comparing(SettledInstruction::getSettledPrice).reversed())
+                .sorted(Comparator.comparing(SettledInstruction::getSettledPriceUsd).reversed())
                 .collect(Collectors.toList());
     }
 

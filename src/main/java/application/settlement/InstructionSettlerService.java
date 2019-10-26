@@ -1,11 +1,13 @@
-package settlement;
+package application.settlement;
 
-import instruction.Instruction;
-import instruction.SettledInstruction;
+import application.instruction.Instruction;
+import application.instruction.SettledInstruction;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@Service
 public class InstructionSettlerService {
 
     private final SettlementDateService settlementDateService;
@@ -25,7 +27,7 @@ public class InstructionSettlerService {
 
     private LocalDate calculateSettlementDate(Instruction instruction) {
         return settlementDateService.calculateSettlementDate(
-                instruction.getInstructionDate(),
+                instruction.getSettlementDate(),
                 instruction.getCurrency()
         );
     }

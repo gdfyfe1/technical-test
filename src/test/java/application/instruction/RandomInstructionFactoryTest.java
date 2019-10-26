@@ -1,4 +1,4 @@
-package instruction;
+package application.instruction;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package instruction;
+package application.instruction;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -76,5 +76,19 @@ public class Instruction {
 
     public void setPricePerUnit(BigDecimal pricePerUnit) {
         this.pricePerUnit = pricePerUnit;
+    }
+
+    @Override
+    public String toString() {
+        return "Instruction{" +
+                "entity='" + entity + '\'' +
+                ", buySell=" + buySell +
+                ", agreedFx=" + agreedFx +
+                ", currency=" + currency +
+                ", instructionDate=" + instructionDate +
+                ", settlementDate=" + settlementDate +
+                ", units=" + units +
+                ", pricePerUnit=" + pricePerUnit +
+                '}';
     }
 }

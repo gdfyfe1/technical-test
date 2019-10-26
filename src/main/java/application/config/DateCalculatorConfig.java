@@ -1,6 +1,6 @@
-package config;
+package application.config;
 
-import instruction.Currency;
+import application.instruction.Currency;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,6 +10,11 @@ import java.util.Map;
 
 @Configuration
 public class DateCalculatorConfig {
+
+    @Bean
+    public DayOfWeek defaultFirstDayOfWeek() {
+        return DayOfWeek.MONDAY;
+    }
 
     @Bean
     public Map<Currency, DayOfWeek> firstDayOfWeekByCurrency() {

@@ -1,4 +1,4 @@
-package settlement;
+package application.settlement;
 
 import org.springframework.stereotype.Service;
 

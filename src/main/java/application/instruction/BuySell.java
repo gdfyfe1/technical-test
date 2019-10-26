@@ -1,4 +1,4 @@
-package instruction;
+package application.instruction;
 
 public enum BuySell {
     B,

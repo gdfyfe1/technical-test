@@ -1,6 +1,6 @@
-package settlement;
+package application.settlement;
 
-import instruction.Currency;
+import application.instruction.Currency;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

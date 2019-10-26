@@ -1,6 +1,6 @@
-package settlement;
+package application.settlement;
 
-import instruction.Currency;
+import application.instruction.Currency;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;

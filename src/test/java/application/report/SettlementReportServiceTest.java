@@ -1,8 +1,8 @@
-package report;
+package application.report;
 
-import instruction.BuySell;
-import instruction.Instruction;
-import instruction.SettledInstruction;
+import application.instruction.BuySell;
+import application.instruction.Instruction;
+import application.instruction.SettledInstruction;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class SettlementDateReportTest {
+public class SettlementReportServiceTest {
 
     private LocalDate localDateA;
     private LocalDate localDateB;
@@ -33,11 +33,11 @@ public class SettlementDateReportTest {
     private List<SettledInstruction> settledBuyInstructions;
     private List<SettledInstruction> settledAllInstructions;
 
-    private SettlementDateReport testObject;
+    private SettlementReportService testObject;
 
     @Before
     public void setUp() {
-        testObject = new SettlementDateReport();
+        testObject = new SettlementReportService();
 
         localDateA = LocalDate.of(2019, 5, 5);
         localDateB = LocalDate.of(2019, 5, 6);
@@ -146,7 +146,7 @@ public class SettlementDateReportTest {
 
     private void assertTopInstructionPrice(List<SettledInstruction> returnedList, int price) {
         SettledInstruction topInstruction = returnedList.get(0);
-        assertEquals(topInstruction.getSettledPrice(), new BigDecimal(price));
+        assertEquals(topInstruction.getSettledPriceUsd(), new BigDecimal(price));
     }
 
     private void assertTotalForDate(Map<LocalDate, BigDecimal> returnedMap, LocalDate localDateA, int i) {
