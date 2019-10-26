@@ -11,4 +11,12 @@ public class SettledInstruction {
         this.instruction = instruction;
         this.settledPrice = settledPrice;
     }
+
+    public Instruction getInstruction() {
+        return instruction;
+    }
+
+    public BigDecimal getSettledPrice() {
+        return settledPrice;
+    }
 }

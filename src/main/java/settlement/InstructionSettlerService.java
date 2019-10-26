@@ -11,7 +11,9 @@ public class InstructionSettlerService {
     private final SettlementDateService settlementDateService;
     private final PriceCalculatorService priceCalculatorService;
 
-    public InstructionSettlerService(SettlementDateService settlementDateService, PriceCalculatorService priceCalculatorService) {
+    public InstructionSettlerService(
+            SettlementDateService settlementDateService,
+            PriceCalculatorService priceCalculatorService) {
         this.settlementDateService = settlementDateService;
         this.priceCalculatorService = priceCalculatorService;
     }
