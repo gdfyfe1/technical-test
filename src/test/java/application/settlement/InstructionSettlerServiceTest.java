@@ -23,6 +23,7 @@ public class InstructionSettlerServiceTest {
 
     @Rule
     public MockitoRule rule = MockitoJUnit.rule();
+
     private Currency currency;
     private BigDecimal pricePerUnits;
     private int units;
