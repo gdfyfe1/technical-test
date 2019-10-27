@@ -20,7 +20,7 @@ public class InstructionSettlerService {
         this.priceCalculatorService = priceCalculatorService;
     }
 
-    public SettledInstruction createSettledInstruction(Instruction instruction) {
+    public SettledInstruction settleInstruction(Instruction instruction) {
         instruction.setSettlementDate(calculateSettlementDate(instruction));
         return new SettledInstruction(instruction, calculatePrice(instruction));
     }

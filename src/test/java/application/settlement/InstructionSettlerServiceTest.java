@@ -57,7 +57,7 @@ public class InstructionSettlerServiceTest {
 
     @Test(expected = NullPointerException.class)
     public void createSettledInstructionNull() {
-        testObject.createSettledInstruction(null);
+        testObject.settleInstruction(null);
     }
 
     @Test
@@ -68,7 +68,7 @@ public class InstructionSettlerServiceTest {
         when(priceCalculatorServiceMock.calculatePrice(pricePerUnits, units, agreedFx))
                 .thenReturn(settlePrice);
 
-        SettledInstruction settledInstruction = testObject.createSettledInstruction(instruction);
+        SettledInstruction settledInstruction = testObject.settleInstruction(instruction);
 
         assertNotNull(settledInstruction);
         assertEquals(newSettleDate, settledInstruction.getInstruction().getSettlementDate());

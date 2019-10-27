@@ -17,10 +17,7 @@ import org.mockito.junit.MockitoRule;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 import static org.junit.Assert.assertEquals;
@@ -60,7 +57,6 @@ public class SettlementControllerTest {
     @Before
     public void setUp() {
         testObject = new SettlementController(
-                supplierMock,
                 instructionSettlerMock,
                 reportServiceMock,
                 printerMock
@@ -69,25 +65,24 @@ public class SettlementControllerTest {
 
     @Test
     public void runReport() {
-        when(supplierMock.get()).thenReturn(instructionMock);
-        when(instructionSettlerMock.createSettledInstruction(instructionMock))
+        when(instructionSettlerMock.settleInstruction(instructionMock))
                 .thenReturn(settledInstructionMock);
 
         Map<LocalDate, BigDecimal> expectedMap = new HashMap<>();
         when(reportServiceMock.calculateSettledPriceByDates(anyList(), any()))
                 .thenReturn(expectedMap);
 
+        int numberOfInstructions = 100;
+
         List<SettledInstruction> expectedList = new ArrayList<>();
         when(reportServiceMock.calculateRankByAmount(anyList(), any()))
                 .thenReturn(expectedList);
 
-        int numberOfInstructions = 100;
-        testObject.runReport(numberOfInstructions);
+        List<Instruction> instructions = Collections.nCopies(100, instructionMock);
+        testObject.runReport(instructions.stream());
 
-        verify(supplierMock, times(numberOfInstructions))
-                .get();
         verify(instructionSettlerMock, times(numberOfInstructions))
-                .createSettledInstruction(instructionMock);
+                .settleInstruction(instructionMock);
 
         verifySettledPriceByDate(numberOfInstructions, BuySell.B);
         verifySettledPriceByDate(numberOfInstructions, BuySell.S);
