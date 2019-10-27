@@ -42,7 +42,7 @@ public class RandomInstructionFactory implements Supplier<Instruction> {
     }
 
     private BigDecimal randomBigDecimal(double midValue, double range) {
-        return new BigDecimal(random.nextDouble() * midValue + range)
+        return BigDecimal.valueOf(random.nextDouble() * midValue + range)
                 .setScale(2, RoundingMode.FLOOR);
     }
 }

@@ -22,13 +22,6 @@ public class SettlementReportServiceTest {
     private LocalDate localDateA;
     private LocalDate localDateB;
 
-    private SettledInstruction settledInstructionBuyA;
-    private SettledInstruction settledInstructionBuyB;
-    private SettledInstruction settledInstructionBuyC;
-    private SettledInstruction settledInstructionSellA;
-    private SettledInstruction settledInstructionSellB;
-    private SettledInstruction settledInstructionSellC;
-
     private List<SettledInstruction> settledSellInstructions;
     private List<SettledInstruction> settledBuyInstructions;
     private List<SettledInstruction> settledAllInstructions;
@@ -46,12 +39,18 @@ public class SettlementReportServiceTest {
     }
 
     private void setUpInstructions() {
-        settledInstructionBuyA = new SettledInstruction(createInstruction(BuySell.B, localDateA), new BigDecimal(101));
-        settledInstructionBuyB = new SettledInstruction(createInstruction(BuySell.B, localDateB), new BigDecimal(202));
-        settledInstructionBuyC = new SettledInstruction(createInstruction(BuySell.B, localDateB), new BigDecimal(303));
-        settledInstructionSellA = new SettledInstruction(createInstruction(BuySell.S, localDateA), new BigDecimal(11));
-        settledInstructionSellB = new SettledInstruction(createInstruction(BuySell.S, localDateB), new BigDecimal(22));
-        settledInstructionSellC = new SettledInstruction(createInstruction(BuySell.S, localDateB), new BigDecimal(33));
+        SettledInstruction settledInstructionBuyA =
+                new SettledInstruction(createInstruction(BuySell.B, localDateA), new BigDecimal(101));
+        SettledInstruction settledInstructionBuyB =
+                new SettledInstruction(createInstruction(BuySell.B, localDateB), new BigDecimal(202));
+        SettledInstruction settledInstructionBuyC =
+                new SettledInstruction(createInstruction(BuySell.B, localDateB), new BigDecimal(303));
+        SettledInstruction settledInstructionSellA =
+                new SettledInstruction(createInstruction(BuySell.S, localDateA), new BigDecimal(11));
+        SettledInstruction settledInstructionSellB =
+                new SettledInstruction(createInstruction(BuySell.S, localDateB), new BigDecimal(22));
+        SettledInstruction settledInstructionSellC =
+                new SettledInstruction(createInstruction(BuySell.S, localDateB), new BigDecimal(33));
 
         settledSellInstructions = asList(
                 settledInstructionSellA,

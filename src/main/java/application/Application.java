@@ -23,6 +23,6 @@ public class Application implements CommandLineRunner {
     @Override
     public void run(String... args) {
         LOGGER.info("Spring application.Application booted successfully. Running application.report...\n");
-        settlementController.runReport(1000);
+        settlementController.runReport(20);
     }
 }

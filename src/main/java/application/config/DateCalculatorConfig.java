@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.DayOfWeek;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 @Configuration
@@ -18,7 +18,7 @@ public class DateCalculatorConfig {
 
     @Bean
     public Map<Currency, DayOfWeek> firstDayOfWeekByCurrency() {
-        Map<Currency, DayOfWeek> map = new HashMap<>();
+        Map<Currency, DayOfWeek> map = new EnumMap<>(Currency.class);
         map.put(Currency.USD, DayOfWeek.MONDAY);
         map.put(Currency.GPB, DayOfWeek.MONDAY);
         map.put(Currency.SGP, DayOfWeek.MONDAY);
