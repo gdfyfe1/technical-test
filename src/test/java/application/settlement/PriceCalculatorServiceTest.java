@@ -1,5 +1,6 @@
 package application.settlement;
 
+import application.instruction.Instruction;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,7 +19,8 @@ public class PriceCalculatorServiceTest {
 
     @Test
     public void calculatePriceZero() {
-        BigDecimal returnedBigDecimal = testObject.calculatePrice(BigDecimal.ZERO, 10, BigDecimal.TEN);
+        Instruction instruction = createInstruction(BigDecimal.ZERO, 10, BigDecimal.TEN);
+        BigDecimal returnedBigDecimal = testObject.calculatePrice(instruction);
 
         assertEquals(BigDecimal.ZERO, returnedBigDecimal);
     }
@@ -26,7 +28,8 @@ public class PriceCalculatorServiceTest {
     @Test
     public void calculatePriceOne() {
         int units = 10;
-        BigDecimal returnedBigDecimal = testObject.calculatePrice(BigDecimal.ONE, units, BigDecimal.ONE);
+        Instruction instruction = createInstruction(BigDecimal.ONE, units, BigDecimal.ONE);
+        BigDecimal returnedBigDecimal = testObject.calculatePrice(instruction);
 
         assertEquals(BigDecimal.valueOf(units), returnedBigDecimal);
     }
@@ -34,9 +37,18 @@ public class PriceCalculatorServiceTest {
     @Test
     public void calculatePrice() {
         int units = 10;
-        BigDecimal returnedBigDecimal = testObject.calculatePrice(BigDecimal.TEN, units, BigDecimal.TEN);
+        Instruction instruction = createInstruction(BigDecimal.TEN, units, BigDecimal.TEN);
+        BigDecimal returnedBigDecimal = testObject.calculatePrice(instruction);
 
         BigDecimal expectedValue = BigDecimal.valueOf(1000);
         assertEquals(expectedValue, returnedBigDecimal);
+    }
+
+    private Instruction createInstruction(BigDecimal agreedFx, int units, BigDecimal pricePerUnits) {
+        Instruction instruction = new Instruction();
+        instruction.setAgreedFx(agreedFx);
+        instruction.setUnits(units);
+        instruction.setPricePerUnit(pricePerUnits);
+        return instruction;
     }
 }

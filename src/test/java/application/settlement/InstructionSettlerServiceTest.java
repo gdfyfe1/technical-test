@@ -65,7 +65,7 @@ public class InstructionSettlerServiceTest {
         when(settlementDateServiceMock.calculateSettlementDate(settleDate, currency))
                 .thenReturn(newSettleDate);
 
-        when(priceCalculatorServiceMock.calculatePrice(pricePerUnits, units, agreedFx))
+        when(priceCalculatorServiceMock.calculatePrice(instruction))
                 .thenReturn(settlePrice);
 
         SettledInstruction settledInstruction = testObject.settleInstruction(instruction);
